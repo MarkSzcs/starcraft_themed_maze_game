@@ -1,0 +1,10 @@
+Sajnos a karakter mozgása nem tökéletes kb. 70/75 %-os, van hogy egy adott cellába csak akkor tutunk eljutni,
+ha magára a játékost tartalmazó cellára kattintunk. Egyszerűen nem tudtam rájönni hol a hiba. 
+Remélem ahol a funkcionalitás hagy némi kivetni valót maga után, ott az esztétikai kidolgozottság képes volt kitölteni az
+űrt. 
+
+Amikor csoporttársakat kérdeztem hogy hogy állnak mások is panaszkodtak, hogy nem megfelelő a karakter mozgatásuk.
+
+Köszönöm a megértést!
+Szűcs Szilárd Márk
+casoyc

@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+*{
+
+    margin: 0;
+    padding: 0;
+    border: 0;
+    list-style: none;
+    text-decoration: none;
+	font: inherit;
+	font-size: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+	outline:none;
+}
+
+#playerName{
+    display: none;
+    position: absolute;
+    width: 250px;
+    border: 2px solid black;
+    /*margin: 25px 0 0 0;*/
+    padding: 2px;
+}
+
+#numOfTreasures{
+    display: none;
+    position: absolute;
+    margin: 75px 0 0 0;
+    width: 250px;
+    border: 2px solid black;
+    padding: 2px;
+}
+
+.toggleOff{
+    display: block !important;
+}
+
+.toggleOn{
+    display: none !important;
+}
+
+#jatekter{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 99.7vh;
+}
+
+#jatekter > table {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 510px;
+}
+
+#plusz1{
+
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 110px;
+    height: 110px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    
+}
+
+/*
+table{
+    min-width: 600px;
+    min-height: 600px;
+    empty-cells: show;
+}
+
+#tabla > table > tr > th {
+    height: 86px;
+    width: 86px;
+    padding: 1px;
+
+}
+
+#tabla > table > tr > td {
+    height: 86px;
+    width: 86px;
+    padding: 1px;
+
+}
+*/

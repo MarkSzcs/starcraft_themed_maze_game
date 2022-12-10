@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ascending of the probe</title>
+
+    <link rel="preload" href="style.css" as="style">
+    <!-- <link rel="preload" href="script.js" as="script">  -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <div id= "jatekter">
+        <img id="bckgrnd" class="toggleOff" src="images/menu3.gif" style="display : none; overflow: hidden; margin-left: auto; border:2px solid black; margin-right: auto;"><img>
+        <input type="text" placeholder="Player Name" id="playerName" class="toggleOff">
+        <input type="text" placeholder="Number of treasures/player" id="numOfTreasures" class="toggleOff">
+        <button id="btn" class="toggleOff" type="button" style="display: none; position: absolute; margin-top: 185px; margin-right: -100px; border:2px solid black; padding:2px;" onclick="getVals()">Play a game</button>
+        <button id="btnHow" class="toggleOff" type="button" onclick="jatekleiras()" style="display: none; position: absolute; margin-top: 185px; margin-right: 100px; border:2px solid black; padding:2px;">How to play</button>
+        <script>
+            var nameOfThePlayer;
+            var treasuresRemaining;
+            function getVals()
+            {
+                nameOfThePlayer = document.getElementById("playerName").value;
+                treasuresRemaining = document.getElementById("numOfTreasures").value;
+                E1 = generateE1(0);
+                generateTbl();
+                setPlayerPos(rooms[7][1], treasuresRemaining);
+                makeTreasures(areTreasurable, treasuresRemaining);
+                mkTdMatrix();
+                refreshTbl();
+            }
+
+            function jatekleiras()
+            {
+                var cont = document.querySelector('#jatekter');
+                cont.innerHTML = "";
+                var paragraph = document.createElement('p');
+                
+
+                paragraph.innerHTML = 'Aiur dicsőséges visszafoglalása a Zerg-ektől, teljesen kimerítette a felsőbbrendű protoss faj gazdaságát.<br>A feladat adott, a te segítségedre is szükség van Aiur újjáépítésében:<br>-> Szerezz nevet magadnak, a legjobban működő gazdaság kiépítésével<br>-> Termeld ki az ásványianyagokat a rádbízott kolónia területéről<br>-> Szállítsd vissza a Nexus-hoz a zsákmányt<br><br><strong>Irányítás:</strong><br>- Jobbklikk: az úttöredék elforgatása<br>- Balklikk a nyílra: az úttöredék beillesztése, az adott sor "rotálása"<br>- Balklikk egy szomszédos útra: a játékos mozgatása';
+                paragraph.style.textAlign = "left";
+                
+                var protIcon = document.createElement('img');
+                protIcon.src = "images/protoss-icon.png";
+                protIcon.style.position = "absolute";
+                protIcon.style.height = "225px"; 
+                protIcon.style.marginLeft = "500px"; 
+                protIcon.style.marginTop = "25px";
+
+                var btnBack = document.createElement('button'); 
+                btnBack.style.padding = "2px";
+                btnBack.style.border = "2px solid black";
+                btnBack.style.position = "absolute"
+                btnBack.style.marginTop = "400px";
+                btnBack.style.width = "100px";
+                btnBack.style.zIndex = "2";
+                btnBack.innerText = "Back";
+                btnBack.onclick = function(){window.location.reload(true)};
+
+                var borderDiv = document.createElement('div');
+                borderDiv.style.position = "absolute"
+                borderDiv.style.height = "500px";
+                borderDiv.style.width = "1000px";
+                borderDiv.style.zIndex = "1";
+                borderDiv.style.border = "2px solid black";
+
+                cont.appendChild(paragraph);
+                cont.appendChild(protIcon);
+                cont.appendChild(btnBack);
+                cont.appendChild(borderDiv);
+            }
+        </script>
+        <table id="tbl" class="toggleOn" ></table>
+        <!--
+        <table>
+            <tr>
+
+                <th></th>
+                <th>a</th>
+                <th>b</th>
+                <th>c</th>
+                <th>d</th>
+                <th>e</th>
+                <th>f</th>
+                <th>g</th>
+                <th></th>
+
+            </tr>
+            <tr>
+
+                <th></th> 
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td> 
+                <th></th>
+
+            </tr>
+                    <tr>
+                
+                <th></th> 
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td> 
+                <th></th>
+
+            </tr>
+            <tr>
+                
+                <th></th> 
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td> 
+                <th></th>
+
+            </tr>
+            <tr>
+                
+                <th></th> 
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td> 
+                <th></th>
+
+            </tr>
+            <tr>
+                
+                <th></th> 
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td> 
+                <th></th>
+
+            </tr>
+            <tr>
+                
+                <th></th> 
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td> 
+                <th></th>
+
+            </tr>
+            <tr>
+                
+                <th></th> 
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td> 
+                <th></th>
+
+            </tr>
+            <tr>            
+                <th></th>
+                <th>a</th>
+                <th>b</th>
+                <th>c</th>
+                <th>d</th>
+                <th>e</th>
+                <th>f</th>
+                <th>g</th>
+                <th></th>
+            </tr>
+        </table>
+        --> 
+    </div>
+    <div class="toggleOn" id="plusz1"></div>
+    <script>
+        function toggle (target, cclass)
+        {
+            document.getElementById(target).classList.remove(cclass)
+        }
+        let btn = document.querySelector("button");
+        btn.addEventListener("click", function(){
+
+        toggle("btn", "toggleOff");
+        toggle("bckgrnd", "toggleOff");
+        toggle("tbl", "toggleOn");
+        toggle("plusz1", "toggleOn");
+        toggle("playerName", "toggleOff");
+        toggle("numOfTreasures", "toggleOff");
+        toggle("btnHow", "toggleOff");
+
+        })
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
