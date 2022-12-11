@@ -26,82 +26,63 @@ const roomIMG = [
     {type: 9, link: "url('images/threeway0.png')", top: true, right: false, bot: true, left: true, next: 8}
  ];
 
-class tblRoom {
-    constructor (id, x, y, treasure)
+function canBePopulated(x, y)
+{
+    if(x === 1 || x === 7)
     {
-        this.id = id;
-        this.x = x;
-        this.y = y;
-        this.player = false;
-        this.treasure = treasure;
-        this.treasureable = this.canBeTreasure();
-        this.populatable = this.canBePopulated();
-        this.link = this.getLink();
-        this.playerLink = "url('images/player1.png')";
-        this.top = this.getTop();
-        this.right = this.getRight();
-        this.bot = this.getBot();
-        this.left = this.getLeft();
-        this.next = this.getNext();
-    }
-
-    canBePopulated()
-    {
-        if(this.x === 1 || this.x === 7)
-        {
-            if (this.y === 1 || this.y === 7)
-            {
-                return true;
-            }else{
-                return false;   
-            }
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    canBeTreasure(){
-        if(this.x === 1 || this.x === 7)
-        {
-            if (this.y === 1 || this.y === 7)
-            {
-                return false;
-            }else{
-                return true;   
-            }
-        }
-        else
+        if (y === 1 || y === 7)
         {
             return true;
+        }else{
+            return false;   
         }
     }
-    getLink(){
-        return roomIMG[this.id].link;
+    else
+    {
+        return false;
     }
-    getTop(){
-        return roomIMG[this.id].top;
-    }
-    getRight(){
-        return roomIMG[this.id].right;
-    }
-    getBot(){
-        return roomIMG[this.id].bot;
-    }
-    getLeft(){
-        return roomIMG[this.id].left;
-    }
-    getNext(){
-        return roomIMG[this.id].next;
-    }
-
-    /*
-    randStraigth(){}
-    randCorner(){}
-    randThreeway(){}
-    */
 }
+
+function canBeTreasure(x, y){
+    if(x === 1 || x === 7)
+    {
+        if (y === 1 || y === 7)
+        {
+            return false;
+        }else{
+            return true;   
+        }
+    }
+    else
+    {
+        return true;
+    }
+}
+
+function getLink(type){
+    return roomIMG[type].link;
+}
+
+function getTop(type){
+    return roomIMG[type].top;
+}
+
+function getRight(type){
+    return roomIMG[type].right;
+}
+
+function getBot(type){
+    return roomIMG[type].bot;
+}
+
+function getLeft(type){
+    return roomIMG[type].left;
+}
+
+function getNext(type){
+    return roomIMG[type].next;
+}
+
 //                                                                                      ARROWS
 const arroIMG = [
     {type: "top", link: "url('images/arro0.png')" },
@@ -112,18 +93,20 @@ const arroIMG = [
 ];
 //                                                                                     MULTICLASS
 class multiClass {
-    constructor(id, x, y)
+    constructor(type, x, y)
     {
-        this.id = id;
+        this.type = type;
         this.x = x;
         this.y = y;
     }
-    getArrowType(){
-        return arroIMG[this.id].type;
-    }
-    getArrowLink(){
-        return arroIMG[this.id].link;
-    }
+}
+
+function getArrowType(type){
+    return arroIMG[type].type;
+}
+
+function getArrowLink(type){
+    return arroIMG[type].link;
 }
 
 //                                                                                       RANDOMIZATION
@@ -136,6 +119,25 @@ const outcomes = [
     {type: "corn", list: [1]},
     {type: "3way", list: [2]}
 ];
+
+function copyTd(copyTo, copyFrom){
+    copyTo.type = copyFrom.type;
+    copyTo.posX = copyFrom.posX;
+    copyTo.posY = copyFrom.posY;
+
+    copyTo.isTreasure = copyFrom.isTreasure;
+    copyTo.isPlayer = copyFrom.isPlayer;
+
+    copyTo.treasureable = copyFrom.treasureable;
+    copyTo.populatable = copyFrom.populatable;
+    copyTo.link = copyFrom.link;
+    copyTo.playerLink = copyFrom.playerLink;
+    copyTo.top = copyFrom.top;
+    copyTo.right = copyFrom.right;
+    copyTo.bot = copyFrom.bot;
+    copyTo.left = copyFrom.left;
+    copyTo.next = copyFrom.next;
+}
 
 function makeP1(opt){
     var x = outcomes[opt].list.length;
@@ -178,7 +180,7 @@ function playerScored()
     }
 }
 
-function refreshE1(id, isTreasure)
+function refreshE1(type, isTreasure)
 {
     let wholeBody = document.querySelector('body');
     wholeBody.oncontextmenu = function(e){e.preventDefault(); refreshE1(E1.next, E1.treasure);};
@@ -188,12 +190,29 @@ function refreshE1(id, isTreasure)
     e1TD.style.width = "85px";
     if(isTreasure === true)
     {
-        E1 = new tblRoom(id, 69, 69, true);
+        //E1 = new tblRoom(id, 69, 69, true);
+        e1TD.__type = type;
+        e1TD.__posX = 69;
+        e1TD.__posY = 69;
+        e1TD.__isTreasure = true;
+        e1TD.__isPlayer = false;
+        e1TD.__treasureable = canBeTreasure();
+        e1TD.__populatable = canBePopulated();
+        e1TD.__link = getLink();
+        e1TD.__next = getNext();
         e1TD.innerHTML = '<img src="images/mineral.png" border="0" style="display: block; margin-left: auto; margin-right: auto;"/>';
     }
     else
     {
-        E1 = new tblRoom(id, 69, 69, false);
+        e1TD.__type = type;
+        e1TD.__posX = 69;
+        e1TD.__posY = 69;
+        e1TD.__isPlayer = false;
+        e1TD.__isTreasure = false;
+        e1TD.__treasureable = canBeTreasure();
+        e1TD.__populatable = canBePopulated();
+        e1TD.__link = getLink();
+        e1TD.__next = getNext(); 
     }
     e1TD.style.backgroundImage = E1.link;
     e1TD.style.backgroundRepeat = "no-repeat";
@@ -219,18 +238,6 @@ function whereThePlayerIs()
         }
     }
 }
-
-/*
-function setJatekosNev(string)
-{
-    jatekosNev = string;
-}
-
-function setKincsekSzama(num)
-{
-    treasuresRemaining = num;
-}
-*/
 
 function countPlayers()
 {
@@ -339,25 +346,6 @@ function refreshTbl()
                                 }
                             });
                         }
-                        /*if(cell > 0 && cell < 8)
-                        {
-                            dbTop+=2;
-                            td.addEventListener('click', ()=>{
-
-                            })); //td.addEventListener('click', insertE1(rooms[row][cell]));
-                            function ()=>{
-                                    if(this.target.matches('td'))
-                                    {
-                                        insertE1(0, 2);
-                                    }
-                            }(e)
-                            {
-                                if(e.target.matches('td'))
-                                {
-                                    insertE1(0, dbTop);
-                                }
-                            }
-                        }*/
 
                     }
                     else if (row === 8)
@@ -469,7 +457,32 @@ function insertE1(row, cell)
     //console.log(obj.getArrowType());
     if (obj.getArrowType() === "top")
     {
-        var temp = new tblRoom(E1.id, 1, cell, E1.treasure);
+        var tempTd = document.createElement('td');
+
+        tempTd.type = E1.type;
+        tempTd.posX = E1.posX;
+        tempTd.posY = E1.posY;
+        tempTd.isTreasure = false;
+        tempTd.isPlayer = false;
+        e1TD.treasureable = canBeTreasure();
+        e1TD.populatable = canBePopulated();
+        e1TD.link = getLink();
+        e1TD.next = getNext();
+
+        this.type = E1.type;
+        this.x = x;
+        this.y = y;
+        this.player = false;
+        this.treasure = treasure;
+        this.treasureable = this.canBeTreasure();
+        this.populatable = this.canBePopulated();
+        this.link = this.getLink();
+        this.playerLink = "url('images/player1.png')";
+        this.top = this.getTop();
+        this.right = this.getRight();
+        this.bot = this.getBot();
+        this.left = this.getLeft();
+        this.next = this.getNext();
         if(rooms[7][cell].player === true)
         {
             temp.player = true;
@@ -706,9 +719,12 @@ function generateTbl(){
             {
                 if(row % 2 != 0 && cell % 2 != 0)
                 {
-                    rooms[row][cell] = new tblRoom(fixed[ind], row, cell, false);
+                    //rooms[row][cell] = new tblRoom(fixed[ind], row, cell, false);
                     td.style.backgroundImage = rooms[row][cell].link;
                     td.style.border = "1px solid black";
+                    td.__row = row;
+                    td.__cell = cell;
+                    td.__isTreasure = false;
                     ind++;
                 }
                 else
@@ -827,16 +843,6 @@ function generateTbl(){
     }
     refreshTdMatrix();
 }
-
-/*
-let tdData = document.querySelectorAll('#jatekter > table > tr > td')
-let tdArray = Array.from(tdData);
-let tdMatrix = new Array;
-while(tdArray.length) 
-{
-    tdMatrix.push(tdArray.splice(0,9));
-}
-*/
 
 function letsGetMoving()
 {
