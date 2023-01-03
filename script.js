@@ -7,11 +7,40 @@ var rooms = [];
 var tdMatrix = [];
 var areTreasurable = [];
 
-var egyenesDb = 13; //13
-var kanyarDb = 15; //15
-var elagazasDb = 6; //6
+var numOfStraights = 13; // egyenesDb 13
+var numOfCorners = 15; //kanyarDb 15
+var numOfIntersections = 6; // elagazasDb 6
 
 const fixed = [2, 6, 6, 3, 7, 7, 6, 9, 7, 8, 9, 9, 4, 8, 8, 5];
+
+function makeRoom(__type, __posX, __posY)
+{
+    let room = document.createElement("td");
+    room.__type = __type;
+    room.__posX = __posX;
+    room.__posY = __posY;
+
+    room.__isTreasure = false;
+    room.__isPlayer = false;
+
+    room.__treasureable = canBeTreasure(__posX, __posY);
+    room.__populatable = canBePopulated(__posX, __posY);
+    room.__link = getLink(__type);
+    room.__playerLink = undefined;
+    room.__top = getTop(__type);
+    room.__right = getRight(__type);
+    room.__bot = getBot(__type);
+    room.__left = getLeft(__type);
+    room.__next = getNext(__type);
+
+    room.style.height = "65px";
+    room.style.width = "65px";
+    room.style.padding = "1px";
+    room.style.backgroundImage = room.__link;
+    room.style.backgroundRepeat = "no-repeat";
+    room.style.backgroundSize = "cover";
+    return room;
+}
 
 const roomIMG = [
     {type: 0, link: "url('images/straigth1.png')", top: true, right: false, bot: true, left: false, next: 1},
@@ -111,7 +140,7 @@ function getArrowLink(type){
 
 //                                                                                       RANDOMIZATION
 const outcomes = [
-    {type: "allThree", list: [0,1,2]},
+    {type: "allThree", list: [0, 1, 2]},
     {type: "cornPstra", list: [0, 1]},
     {type: "3wayPstra", list: [0, 2]},
     {type: "3wayPcorn", list: [1, 2]},
@@ -121,22 +150,22 @@ const outcomes = [
 ];
 
 function copyTd(copyTo, copyFrom){
-    copyTo.type = copyFrom.type;
-    copyTo.posX = copyFrom.posX;
-    copyTo.posY = copyFrom.posY;
+    copyTo.__type = copyFrom.__type;
+    copyTo.__posX = copyFrom.__posX;
+    copyTo.__posY = copyFrom.__posY;
 
-    copyTo.isTreasure = copyFrom.isTreasure;
-    copyTo.isPlayer = copyFrom.isPlayer;
+    copyTo.__isTreasure = copyFrom.__isTreasure;
+    copyTo.__isPlayer = copyFrom.__isPlayer;
 
-    copyTo.treasureable = copyFrom.treasureable;
-    copyTo.populatable = copyFrom.populatable;
-    copyTo.link = copyFrom.link;
-    copyTo.playerLink = copyFrom.playerLink;
-    copyTo.top = copyFrom.top;
-    copyTo.right = copyFrom.right;
-    copyTo.bot = copyFrom.bot;
-    copyTo.left = copyFrom.left;
-    copyTo.next = copyFrom.next;
+    copyTo.__treasureable = copyFrom.__treasureable;
+    copyTo.__populatable = copyFrom.__populatable;
+    copyTo.__link = copyFrom.__link;
+    copyTo.__playerLink = copyFrom.__playerLink;
+    copyTo.__top = copyFrom.__top;
+    copyTo.__right = copyFrom.__right;
+    copyTo.__bot = copyFrom.__bot;
+    copyTo.__left = copyFrom.__left;
+    copyTo.__next = copyFrom.__next;
 }
 
 function makeP1(opt){
@@ -146,13 +175,13 @@ function makeP1(opt){
     switch(type)
     {
         case 0:
-            egyenesDb--;
+            numOfStraights--;
             return Math.floor(Math.random() * 2);
         case 1:
-            kanyarDb--;
+            numOfCorners--;
             return Math.floor(Math.random() * 4 ) + 2;
         case 2:
-            elagazasDb--;
+            numOfIntersections--;
             return Math.floor(Math.random() * 4 ) + 6;
     }
 }
@@ -241,18 +270,18 @@ function whereThePlayerIs()
 
 function countPlayers()
 {
-    var darab = 0;
+    var db = 0;
     for(var i = 1; i < 8; i++)
     {
         for(var j = 1; j < 8; j++)
         {
             if(rooms[i][j].player === true)
             {
-                darab++;
+                db++;
             }
         }
     }
-    return darab;
+    return db;
 }
 
 function whereThePlayerIs2()
@@ -663,7 +692,7 @@ function setPlayerPos(obj)
     }
 }
 
-function generateE1(x){
+function makeE1(x){
 
     /*
     var E1 = new tblRoom(makeP1(0), 69, 69);
@@ -730,52 +759,48 @@ function generateTbl(){
                 else
                 {
                     
-                    if(elagazasDb > 0 && kanyarDb > 0 && egyenesDb > 0)
+                    if(numOfIntersections > 0 && numOfCorners > 0 && numOfStraights > 0)
                     {
                         rooms[row][cell] = new tblRoom(makeP1(0), row, cell, false);
                         td.style.backgroundImage = rooms[row][cell].link;
                         td.style.border = "1px solid black";
                     }
-                    else if(elagazasDb === 0 && kanyarDb > 0 && egyenesDb > 0)
+                    else if(numOfIntersections === 0 && numOfCorners > 0 && numOfStraights > 0)
                     {
                         rooms[row][cell] = new tblRoom(makeP1(1), row, cell, false);
                         td.style.backgroundImage = rooms[row][cell].link;
                         td.style.border = "1px solid black";
                     }
-                    else if(elagazasDb > 0 && kanyarDb === 0 && egyenesDb > 0)
+                    else if(numOfIntersections > 0 && numOfCorners === 0 && numOfStraights > 0)
                     {
                         rooms[row][cell] = new tblRoom(makeP1(2), row, cell, false);
                         td.style.backgroundImage = rooms[row][cell].link;
                         td.style.border = "1px solid black";
                     }
-                    else if(elagazasDb > 0  && kanyarDb > 0 && egyenesDb === 0)
+                    else if(numOfIntersections > 0  && numOfCorners > 0 && numOfStraights === 0)
                     {
                         rooms[row][cell] = new tblRoom(makeP1(3), row, cell, false);
                         td.style.backgroundImage = rooms[row][cell].link;
                         td.style.border = "1px solid black";
                     }
-                    else if(elagazasDb === 0 && kanyarDb === 0 && egyenesDb > 0)
+                    else if(numOfIntersections === 0 && numOfCorners === 0 && numOfStraights > 0)
                     {  
                         rooms[row][cell] = new tblRoom((makeP1(4)), row, cell, false);
                         td.style.backgroundImage = rooms[row][cell].link;
                         td.style.border = "1px solid black";
                     }
-                    else if(elagazasDb === 0 && kanyarDb > 0 && egyenesDb === 0)
+                    else if(numOfIntersections === 0 && numOfCorners > 0 && numOfStraights === 0)
                     {
                         rooms[row][cell] = new tblRoom(makeP1(5), row, cell, false);
                         td.style.backgroundImage = rooms[row][cell].link;
                         td.style.border = "1px solid black";
                     }
-                    else if(elagazasDb > 0 && kanyarDb === 0 && egyenesDb === 0)
+                    else if(numOfIntersections > 0 && numOfCorners === 0 && numOfStraights === 0)
                     {
                         rooms[row][cell] = new tblRoom(makeP1(6), row, cell, false);
                         td.style.backgroundImage = rooms[row][cell].link;
                         td.style.border = "1px solid black";
                     }
-                    /*else if(elagazasDb < 0 || kanyarDb < 0 || egyenesDb < 0)
-                    {
-                        console.log("Hibas szobaszamok");
-                    }*/
             
                 }
                 if(rooms[row][cell].treasureable === true)
