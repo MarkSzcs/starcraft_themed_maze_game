@@ -692,28 +692,27 @@ function setPlayerPos(obj)
     }
 }
 
-function makeE1(x){
+function makeE1(itsType){
 
     /*
     var E1 = new tblRoom(makeP1(0), 69, 69);
     document.getElementById('plusz1').style.backgroundImage = E1.link;
     */
     let wholeBody = document.querySelector('body');
-    wholeBody.oncontextmenu = function(e){e.preventDefault(); refreshE1(E1.next);};
+    wholeBody.oncontextmenu = function(e){
+        e.preventDefault(); 
+        refreshE1(E1.next);
+    };
 
-    var e1TBL = document.createElement('table'), e1TR = document.createElement('tr'), e1TD = document.createElement('td');
-    e1TD.style.height = "85px";
-    e1TD.style.width = "85px";
-    E1 = new tblRoom(makeP1(x), 69, 69, false);
-    e1TD.style.backgroundImage = E1.link;
-    e1TD.style.backgroundRepeat = "no-repeat";
-    e1TD.style.backgroundSize = "cover";
+    var e1TBL = document.createElement('table'), e1TR = document.createElement('tr');
+    E1 = makeRoom(makeP1(itsType), 69, 69, false);
+    E1.style.height = "85px";
+    E1.style.width = "85px";
     e1TR.appendChild(e1TD);
     e1TBL.appendChild(e1TR);
     e1TBL.style.border = "2px solid red"; //#2a1f19
     document.getElementById('plusz1').appendChild(e1TBL);
     return E1;
-    
 }
 
 function generateTbl(){
