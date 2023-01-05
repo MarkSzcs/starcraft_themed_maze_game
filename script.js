@@ -212,40 +212,17 @@ function playerScored()
 function refreshE1(type, isTreasure)
 {
     let wholeBody = document.querySelector('body');
-    wholeBody.oncontextmenu = function(e){e.preventDefault(); refreshE1(E1.next, E1.treasure);};
+    wholeBody.oncontextmenu = function(e){
+        e.preventDefault();
+        refreshE1(E1.next, E1.treasure);
+    };
 
-    var e1TBL = document.createElement('table'), e1TR = document.createElement('tr'), e1TD = document.createElement('td');
-    e1TD.style.height = "85px";
-    e1TD.style.width = "85px";
+    var e1TBL = document.createElement('table'), e1TR = document.createElement('tr'), 
+    e1TD = makeRoom(type, 69, 69, isTreasure);
     if(isTreasure === true)
     {
-        //E1 = new tblRoom(id, 69, 69, true);
-        e1TD.__type = type;
-        e1TD.__posX = 69;
-        e1TD.__posY = 69;
-        e1TD.__isTreasure = true;
-        e1TD.__isPlayer = false;
-        e1TD.__treasureable = canBeTreasure();
-        e1TD.__populatable = canBePopulated();
-        e1TD.__link = getLink();
-        e1TD.__next = getNext();
         e1TD.innerHTML = '<img src="images/mineral.png" border="0" style="display: block; margin-left: auto; margin-right: auto;"/>';
     }
-    else
-    {
-        e1TD.__type = type;
-        e1TD.__posX = 69;
-        e1TD.__posY = 69;
-        e1TD.__isPlayer = false;
-        e1TD.__isTreasure = false;
-        e1TD.__treasureable = canBeTreasure();
-        e1TD.__populatable = canBePopulated();
-        e1TD.__link = getLink();
-        e1TD.__next = getNext(); 
-    }
-    e1TD.style.backgroundImage = E1.link;
-    e1TD.style.backgroundRepeat = "no-repeat";
-    e1TD.style.backgroundSize = "cover";
     e1TR.appendChild(e1TD);
     e1TBL.appendChild(e1TR);
     e1TBL.style.border = "2px solid red"; //#2a1f19
@@ -708,7 +685,7 @@ function makeE1(itsType){
     E1 = makeRoom(makeP1(itsType), 69, 69, false);
     E1.style.height = "85px";
     E1.style.width = "85px";
-    e1TR.appendChild(e1TD);
+    e1TR.appendChild(E1);
     e1TBL.appendChild(e1TR);
     e1TBL.style.border = "2px solid red"; //#2a1f19
     document.getElementById('plusz1').appendChild(e1TBL);
